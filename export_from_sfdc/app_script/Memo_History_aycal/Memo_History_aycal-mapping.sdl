@@ -1,0 +1,8 @@
+MemoExternalID__c=MemoExternalID__c 
+PreRequest__r.PreRequestExternalID__c=PreRequest__r.PreRequestExternalID__c
+MemoText__c=MemoText__c
+MemoDateTime__c=MemoDateTime__c 
+MemoType__c=MemoType__c
+MemoBy__c=MemoBy__c
+Entity__c=Entity__c
+AsOfDateTime__c=AsOfDateTime__c

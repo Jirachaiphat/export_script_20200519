@@ -1,0 +1,8 @@
+ExternalID__c=ExternalID__c
+PreRequest__r.PreRequestExternalID__c=PreRequest__r.PreRequestExternalID__c 
+ActionDateTime__c=ActionDateTime__c
+ActionCode__r.ActionCode__c=ActionCode__r.ActionCode__c
+NextDateTime__c=NextDateTime__c
+ColTakeActionBy__c=ColTakeActionBy__c
+Entity__c=Entity__c
+AsOfDateTime__c=AsOfDateTime__c

@@ -1,0 +1,81 @@
+-
+  cmdName: "ProcessRecordset"
+  getRecordsetsFrom: "{RECORDSETS_TO_PROCESS}"
+  commands: 
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "PreRequestDate__c"
+        destinationColumn : "PreRequestDate__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "ContactDateFax__c"
+        destinationColumn : "ContactDateFax__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "MRDateTime__c"
+        destinationColumn : "MRDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "FirstResponseDateTime__c"
+        destinationColumn : "FirstResponseDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "ActionDateTime__c"
+        destinationColumn : "ActionDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "AssignDateTime__c"
+        destinationColumn : "AssignDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "MemoDateTime__c"
+        destinationColumn : "MemoDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "AsOfDateTime__c"
+        destinationColumn : "AsOfDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "FirstAssignedLeadDateTime__c"
+        destinationColumn : "FirstAssignedLeadDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "FirstActionDateTime__c"
+        destinationColumn : "FirstActionDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "NextDateFollowup__c"
+        destinationColumn : "NextDateFollowup__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7

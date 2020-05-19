@@ -1,0 +1,25 @@
+-
+  cmdName: "ProcessRecordset"
+  getRecordsetsFrom: "{RECORDSETS_TO_PROCESS}"
+  commands: 
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "ActionDateTime__c"
+        destinationColumn : "ActionDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "NextDateTime__c"
+        destinationColumn : "NextDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7
+    -
+      TransformDateTimeFormat:
+        sourceColumn: "AsOfDateTime__c"
+        destinationColumn : "AsOfDateTime__c"
+        oldFormat: "yyyy-MM-ddThh:mm:ss.000Z"
+        targetFormat: "yyyy-MM-ddThh:mm:ss"
+        addHours: 7

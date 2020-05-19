@@ -1,0 +1,162 @@
+-
+  cmdName: "ChangeFileLog"
+  logPath: "process_log/TO_NOW({yyyy}{MM}{dd})/"
+  logNameFormat: "export_{INTERFACE}_TO_NOW({yyyy}{MM}{dd}{hh}{mm}{ss}).txt"
+-
+  cmdName: "DefaultVariable"
+  constants:
+    BASE_PATH: "krungsriauto/export_from_sfdc"
+    PK_CHUNK_SIZE: "0"
+    DATE_FOLDERNAME: "TO_NOW({yyyy}{MM}{dd})"
+    NO_RECORDS_PER_PROCESS: 100000
+    # DATE_FILENAME: "TO_NOW({yyyy}-{MM}-{dd})_000000"
+    # DATE_FILENAME: "{TARGET_STARTDATE}_000000"
+    DATE_FILENAME: "TO_NOW({yyyy}{MM}{dd})"
+-
+  cmdName: "DefaultVariable"
+  constants:
+    LOGIB_ORG: "{KA_ORG}"
+    OUTBOUND_FILE_DIR: "outbound/{DATE_FOLDERNAME}/"
+    TEMP_OUTPUT_FILE_DIR: "outbound/{DATE_FOLDERNAME}/temp/"
+    OUTPUT_FILE_SUFFIX: "SFDC_TO_UPPERCASE({INTERFACE})_{DATE_FILENAME}.utf8"
+    PROCESS_RECORDSET_FILE: "krungsriauto/export_from_sfdc/app_script/{INTERFACE}/process_export_{INTERFACE}_recordset.yaml"
+-
+  cmdName: "ManageFile"
+  mode: "delete"
+  source:
+    directory: "{TEMP_OUTPUT_FILE_DIR}"
+    filename: "{OUTPUT_FILE_SUFFIX}"
+-
+  cmdName: "RunScript"
+  runScript:
+    scriptFile: "app_script_template/queryFromSFDCViaBulkAPIV1.yaml"
+    setVariables:
+      OUTPUT_FILE_DIR: "{TEMP_OUTPUT_FILE_DIR}"
+- 
+  cmdName: "Loop"
+  start: "1"
+  end: "-1"
+  step: "{NO_RECORDS_PER_PROCESS}"
+  runScript:
+    scripts:
+      -
+        cmdName: "FileToRecordset"
+        source:
+          directory: "{TEMP_OUTPUT_FILE_DIR}"
+          contains: "{OUTPUT_FILE_SUFFIX}"
+          delimiter: ","  
+        start: "{CURRENT_LOOP_INDEX}"
+        numberOfRecords: "{STEP_EACH_LOOP}"
+        saveRecordsetsTo: "chunkRecordsets"
+      -
+        cmdName: "RunScript"
+        runScript:
+          scriptFile: "{PROCESS_RECORDSET_FILE}"
+          setVariables:
+            RECORDSETS_TO_PROCESS: "chunkRecordsets"
+      -
+        cmdName: "RecordsetToFile"
+        mode: "append"
+        getRecordsetsFrom: "chunkRecordsets"
+        headerMappedFile: "krungsriauto/export_from_sfdc/app_script/{INTERFACE}/{INTERFACE}-mapping.sdl"
+        destination:
+          directory: "{OUTBOUND_FILE_DIR}"
+      -
+        cmdName: "ClearVariables"
+        variables:
+          - "chunkRecordsets"
+-
+  cmdName: "ManageFile"
+  mode: "delete"
+  source:
+    directory: "{TEMP_OUTPUT_FILE_DIR}"
+    contains: "{OUTPUT_FILE_SUFFIX}"
+-
+  cmdName: "ManageFile"
+  mode: "copy"
+  runIf: "{RESULT_TOTALSIZE}==0"
+  source:
+    directory: "krungsriauto/export_from_sfdc/app_script/{INTERFACE}/"
+    filename: "SFDC_TO_UPPERCASE({INTERFACE})_"
+  destination:
+    directory: "outbound/{DATE_FOLDERNAME}/"
+    suffix: "{DATE_FILENAME}.000000.csv"
+-
+  cmdName: "ManageFile"
+  runIf: "{RESULT_TOTALSIZE}!=0"
+  mode: "move"
+  source:
+    directory: "outbound/{DATE_FOLDERNAME}/"
+    filename: "SFDC_TO_UPPERCASE({INTERFACE})_{DATE_FILENAME}.utf8"
+  destination: 
+    directory: "outbound/{DATE_FOLDERNAME}/"
+    #encoding: "Windows874"
+    replace:
+      oldString: ".utf8"
+      newString: ".csv"
+-
+  cmdName: "FileToRecordset"
+  source:
+    directory: "krungsriauto/export_from_sfdc/app_script_template/"
+    filename: "ctl_template.csv"
+  saveRecordsetsTo: "ctlRecordset"
+-
+  cmdName: "ProcessRecordset"
+  getRecordsetsFrom: "ctlRecordset"
+  commands: 
+    - 
+      TransformAssign:
+        destinationColumn: "File Name"
+        defaultValue: SFDC_TO_UPPERCASE({INTERFACE})_{DATE_FILENAME}.csv
+    -
+      TransformAssign:
+        destinationColumn: "File Time Stamp"
+        defaultValue: TO_NOW({yyyy}-{MM}-{dd} {hh}:{mm}:{ss})
+    # -
+    #   TransformAssign:
+    #     destinationColumn: "Data Start Timestamp"
+    #     defaultValue: "{TARGET_STARTDATE} 00:00:00.000000"
+    # -
+    #   TransformAssign:
+    #     destinationColumn: "Data End Timestamp"
+    #     defaultValue: "{TARGET_ENDDATE} 23:59:59.999999"
+    -
+      TransformAssign:
+        destinationColumn: "File Qualifier"
+        defaultValue: "0000000001"
+    -
+      TransformAssign:
+        destinationColumn: "Number of records"
+        defaultValue: "{RESULT_TOTALSIZE}"
+    - 
+      TransformToInt: 
+        sourceColumn: "Number of records" 
+        destinationColumn: "Number of records" 
+    # - 
+    #   TransformLeadingZero: 
+    #     sourceColumn: "Number of records" 
+    #     destinationColumn: "Number of records" 
+    #     length: "10"
+-
+  cmdName: "RecordsetToFile"
+  getRecordsetsFrom: "ctlRecordset"
+  mode: "append"
+  headerMappedField:
+    - "File Name": "File Name"
+    - "Number of records": "Number of records"
+    - "File Time Stamp": "File Time Stamp"
+    # - "Data Start Timestamp": "Data Start Timestamp"
+    # - "Data End Timestamp": "Data End Timestamp"
+  destination:
+    directory: "outbound/{DATE_FOLDERNAME}/"
+    filename: "SFDC_RECONCILE_TO_NOW({yyyy}{MM}{dd}).csv"
+# -
+#   cmdName: "RecordsetToFixedWidthFile"
+#   getRecordsetsFrom: "ctlRecordset"
+#   config:
+#     directory: "krungsriauto/export_from_sfdc/app_script_template/"
+#     filename: "ctl_file_config.yaml"
+#   destination:
+#     directory: "outbound/{DATE_FOLDERNAME}/"
+#     filename: "SFDC_TO_UPPERCASE({INTERFACE})_{DATE_FILENAME}.000000.ctl"
+    

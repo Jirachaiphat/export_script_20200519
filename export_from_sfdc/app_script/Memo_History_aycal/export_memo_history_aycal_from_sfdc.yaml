@@ -1,0 +1,15 @@
+#-
+  #cmdName: "DefaultVariable"
+  #constants:
+  #  TARGET_STARTDATE: "TO_NOW({yyyy}-{MM}-{dd-1})"
+  #  TARGET_ENDDATE: "TO_NOW({yyyy}-{MM}-{dd-1})"
+-
+  cmdName: "DefaultVariable"
+  constants:
+    INTERFACE: Memo_History_aycal
+    QUERY_SOBJECT: "Memo__c"
+    QUERY_STRING: "Select MemoExternalID__c, PreRequest__r.PreRequestExternalID__c, MemoText__c, MemoDateTime__c, MemoType__c, MemoBy__c, Entity__c, AsOfDateTime__c FROM Memo__c WHERE Entity__c = 'AYCAL' AND MemoType__c != 'C' AND LastModifiedDate = LAST_N_DAYS:2"
+-
+  cmdName: "RunScript"
+  runScript:
+    scriptFile: "krungsriauto/export_from_sfdc/app_script_template/export_from_sfdc.yaml"

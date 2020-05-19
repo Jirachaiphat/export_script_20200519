@@ -1,0 +1,15 @@
+#-
+  #cmdName: "DefaultVariable"
+  #constants:
+  #  TARGET_STARTDATE: "TO_NOW({yyyy}-{MM}-{dd-1})"
+  #  TARGET_ENDDATE: "TO_NOW({yyyy}-{MM}-{dd-1})"
+-
+  cmdName: "DefaultVariable"
+  constants:
+    INTERFACE: Action_History_aycal
+    QUERY_SOBJECT: "Event"
+    QUERY_STRING: "Select ExternalID__c, PreRequest__r.PreRequestExternalID__c, ActionDateTime__c, ActionCode__r.ActionCode__c, NextDateTime__c, ColTakeActionBy__c, Entity__c, AsOfDateTime__c FROM Event WHERE Recordtype.Name = 'Action History' AND Entity__c = 'AYCAL' AND LastModifiedDate = LAST_N_DAYS:2"
+-
+  cmdName: "RunScript"
+  runScript:
+    scriptFile: "krungsriauto/export_from_sfdc/app_script_template/export_from_sfdc.yaml"
